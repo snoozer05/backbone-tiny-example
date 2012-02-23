@@ -16,7 +16,16 @@ $(function(){
     }
   });
 
-  App.ProgressView = Backbone.View.extend({
+  App.ProgressBaseView = Backbone.View.extend({
+    initialize: function() {
+      _.bindAll(this, 'render');
+      this.model.bind('change', this.render);
+    }
+  });
+
+  var model = new App.Progress;
+
+  var view1 = new (App.ProgressBaseView.extend({
     initialize: function() {
       var self = this;
       $.contextMenu({
@@ -26,16 +35,13 @@ $(function(){
           "down": {name: "減らす", callback: function(key, opt){ self.model.down(); }},
         },
       });
-      _.bindAll(this, 'render');
-      this.model.bind('change', this.render);
+      App.ProgressBaseView.prototype.initialize.call(this);
     },
     render: function() {
       $(this.el).html(this.model.data());
       return this;
     }
-  });
+  }))({model: model, el: '#view1', menu: '#menu'});
 
-  var model = new App.Progress;
-  var view = new App.ProgressView({model: model, el: '#view1', menu: '#menu'});
-  view.render();
+  view1.render();
 });
