@@ -53,6 +53,19 @@ $(function(){
     },
   }))({model: model, el: '#view2'});
 
+  var view3 = new (App.ProgressBaseView.extend({
+    events: {
+      "click #up"   : function(){ this.model.up() },
+      "click #down" : function(){ this.model.down() },
+    },
+    render: function() {
+      var value = this.model.data();
+      this.$(".bar").css('width', value+"%");
+      return this;
+    },
+  }))({model: model, el: '#view3'});
+
   view1.render();
   view2.render();
+  view3.render();
 });
