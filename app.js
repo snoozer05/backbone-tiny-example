@@ -43,5 +43,16 @@ $(function(){
     }
   }))({model: model, el: '#view1', menu: '#menu'});
 
+  var view2 = new (App.ProgressBaseView.extend({
+    render: function() {
+      var output = '';
+      var value = this.model.data();
+      _(value).times(function() { output += "■"; });
+      $(this.el).html(output);
+      return this;
+    },
+  }))({model: model, el: '#view2'});
+
   view1.render();
+  view2.render();
 });
