@@ -13,6 +13,29 @@ $(function(){
     },
     data: function() {
       return this.get("value");
-    },
+    }
   });
+
+  App.ProgressView = Backbone.View.extend({
+    initialize: function() {
+      var self = this;
+      $.contextMenu({
+        selector: this.options['menu'],
+        items: {
+          "up":   {name: "増やす", callback: function(key, opt){ self.model.up(); }},
+          "down": {name: "減らす", callback: function(key, opt){ self.model.down(); }},
+        },
+      });
+      _.bindAll(this, 'render');
+      this.model.bind('change', this.render);
+    },
+    render: function() {
+      $(this.el).html(this.model.data());
+      return this;
+    }
+  });
+
+  var model = new App.Progress;
+  var view = new App.ProgressView({model: model, el: '#view1', menu: '#menu'});
+  view.render();
 });
